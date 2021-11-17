@@ -3,10 +3,12 @@ import { StyleSheet, View } from 'react-native';
 import MapView from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import MapStyles from 'src/theme/MapStyles.json';
+import { useSettings } from 'src/context/Settings';
 
 export const Map = () => {
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
+  const { mapType } = useSettings();
 
   const coords = Geolocation.getCurrentPosition(
     loc => {
@@ -25,6 +27,7 @@ export const Map = () => {
         height: '100%',
       }}>
       <MapView
+        mapType={mapType}
         initialRegion={{
           latitude,
           longitude,
