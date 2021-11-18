@@ -3,25 +3,32 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Map } from 'src/components/Map';
 import { Settings } from 'src/components/Settings';
 import Icon from 'react-native-vector-icons/Feather';
+import { colors } from 'src/theme/colors';
 
 const Tab = createBottomTabNavigator();
 
 export const Navigation = () => {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: '#fff',
+        tabBarStyle: {
+          backgroundColor: colors.purple,
+        },
+      }}>
       <Tab.Screen
         name="Map"
         component={Map}
         options={{
           tabBarLabel: 'Map',
           tabBarLabelStyle: {
-            color: '#000',
             fontFamily: 'Nunito-Regular',
           },
           tabBarIcon: ({ focused }) => (
             <Icon
               name="map-pin"
-              color={focused ? '#ff0a0a' : '#000'}
+              color={focused ? colors.red : '#000'}
               size={24}
             />
           ),
@@ -34,7 +41,6 @@ export const Navigation = () => {
           tabBarLabel: 'Settings',
           tabBarLabelStyle: {
             fontFamily: 'Nunito-Regular',
-            color: '#000',
           },
           tabBarIcon: ({ focused }) => (
             <Icon
