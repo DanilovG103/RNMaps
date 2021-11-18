@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
-import MapStyles from 'src/theme/MapStyles.json';
 import { useSettings } from 'src/context/Settings';
 import { useMapStyles } from 'src/context/MapStyles';
 
+interface IMarker {
+  coordinates: {
+    longitude: number;
+    latitude: number;
+  };
+}
+
 export const Map = () => {
+  const [markers, setMarkers] = useState<IMarker[]>([]);
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
   const { mapType } = useSettings();
@@ -42,7 +49,21 @@ export const Map = () => {
         showsUserLocation
         followsUserLocation
         loadingEnabled
-      />
+        onLongPress={e => {
+          setMarkers([
+            ...markers,
+            {
+              coordinates: {
+                latitude: e.nativeEvent.coordinate.latitude,
+                longitude: e.nativeEvent.coordinate.longitude,
+              },
+            },
+          ]);
+        }}>
+        {markers.map((item, index) => (
+          <Marker key={index} pinColor="blue" coordinate={item.coordinates} />
+        ))}
+      </MapView>
     </View>
   );
 };
