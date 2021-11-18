@@ -4,11 +4,13 @@ import MapView from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import MapStyles from 'src/theme/MapStyles.json';
 import { useSettings } from 'src/context/Settings';
+import { useMapStyles } from 'src/context/MapStyles';
 
 export const Map = () => {
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
   const { mapType } = useSettings();
+  const { mapStyle } = useMapStyles();
 
   const coords = Geolocation.getCurrentPosition(
     loc => {
@@ -34,7 +36,7 @@ export const Map = () => {
           latitudeDelta: 0.01,
           longitudeDelta: 0.01,
         }}
-        customMapStyle={MapStyles}
+        customMapStyle={mapStyle}
         style={{ ...StyleSheet.absoluteFillObject }}
         zoomEnabled
         showsUserLocation

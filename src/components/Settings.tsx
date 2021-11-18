@@ -1,7 +1,9 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { FlatList, TouchableOpacity } from 'react-native';
+import { useMapStyles } from 'src/context/MapStyles';
 import { useSettings } from 'src/context/Settings';
 import { colors } from 'src/theme/colors';
+import { styles } from 'src/theme/maps';
 import styled from 'styled-components/native';
 
 const Container = styled.View`
@@ -39,7 +41,7 @@ const Circle = styled.View<{ selected: boolean }>`
 
 export const Settings = () => {
   const { mapType, setMapType } = useSettings();
-
+  const { mapStyle, setMapStyle } = useMapStyles();
   const isStandard = mapType === 'standard';
   const isHybrid = mapType === 'hybrid';
   const isSatellite = mapType === 'satellite';
@@ -64,6 +66,17 @@ export const Settings = () => {
         <SettingDescr>Terrain</SettingDescr>
         <Circle selected={isTerrain} />
       </Pressable>
+      <SettingTitle>Map style</SettingTitle>
+      <FlatList
+        data={styles}
+        renderItem={({ item }) => (
+          <Pressable onPress={() => setMapStyle(item.component)}>
+            <SettingDescr>{item.name}</SettingDescr>
+            <Circle selected={mapStyle === item.component} />
+          </Pressable>
+        )}
+        keyExtractor={item => item.id}
+      />
     </Container>
   );
 };
